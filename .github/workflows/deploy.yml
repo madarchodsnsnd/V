@@ -48,5 +48,4 @@ jobs:
 
     - name: Start the bot
       run: |
-        cd $ALONE_DIR
         bash start 
