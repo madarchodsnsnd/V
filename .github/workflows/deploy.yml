@@ -42,14 +42,10 @@ jobs:
           pip install -r requirements.txt
         fi
         
-    # Step 6: Run the bot
+    # Step 6: Run the bot using python3 -m ALONE
     - name: Start the bot
       run: |
-          bash start
-        else
-          echo "Error: Could not find bot startup file"
-          exit 1
-        fi
+        python3 -m ALONE
         
     # Keep workflow running
     - name: Keep alive
