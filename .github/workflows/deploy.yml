@@ -49,4 +49,4 @@ jobs:
     - name: Start the bot
       run: |
         cd $ALONE_DIR
-        python3 -m AloneX
+        bash start 
