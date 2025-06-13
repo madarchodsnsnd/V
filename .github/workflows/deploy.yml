@@ -1,7 +1,7 @@
 name: Deploy ALONE Music Bot
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
   push:
     branches: [ "main" ]
 
@@ -16,17 +16,24 @@ jobs:
         git clone https://github.com/madarchodsnsnd/V.git
         cd V
         
-    # Step 2: Install unzip and dependencies
+    # Step 2: Install dependencies
     - name: Install system packages
       run: |
         sudo apt-get update -y
         sudo apt-get install -y unzip ffmpeg python3-pip
         
-    # Step 3: Unzip ALONE.zip
-    - name: Extract ALONE.zip
+    # Step 3: Extract ALONE.210 (exact filename)
+    - name: Extract bot files
       run: |
-        unzip ALONE.zip
-        cd ALONE
+        if [ -f "ALONE.210" ]; then
+          unzip ALONE.210 -d ALONE
+          cd ALONE
+        else
+          echo "Error: ALONE.210 file not found!"
+          echo "Contents of current directory:"
+          ls -la
+          exit 1
+        fi
         
     # Step 4: Setup Python
     - name: Set up Python
@@ -40,12 +47,14 @@ jobs:
         pip install --upgrade pip
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
+        else
+          echo "Warning: requirements.txt not found, continuing anyway"
         fi
         
-    # Step 6: Run the bot using python3 -m ALONE
+    # Step 6: Run the bot
     - name: Start the bot
       run: |
-        python3 -m ALONE
+        python3 -m ALONE || python3 ALONE.py || python3 main.py || python3 -m alone
         
     # Keep workflow running
     - name: Keep alive
